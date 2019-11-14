@@ -7,3 +7,26 @@ db.produtos.insertOne({
     chips: 1,
     preco: NumberDecimal("4999.99"),
 })
+
+db.clientes.insertOne({
+    nome: "Giovanni",
+    endereco: "Rua Vergueiro, 3185",
+    email: "giovanni@example.com",
+    senha: "giovanni123"
+})
+
+db.clientes.insertOne({
+    nome: "Ricardo",
+    endereco: "Rua do Ouvidor, 50",
+    email: "ricardo@example.com",
+    senha: "ricardo123"
+})
+
+db.produtos.update({
+    modelo: "iPhone 11"
+}, {
+    $set: {
+        quantidade: 7
+    }
+})
+
