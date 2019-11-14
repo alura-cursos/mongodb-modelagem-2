@@ -70,3 +70,23 @@ var precoProdutos = db.clientes.aggregate([
     }
 ]).toArray()[0]
 
+var cliente = db.clientes.findOne({
+    nome: "Ricardo"
+})
+
+db.pedidos.insertOne({
+    id_cliente: cliente._id,
+    endereco: cliente.endereco,
+    data: ISODate(),
+    valorTotal: precoProdutos.valorTotal,
+    produtos: cliente.carrinho.produtos,
+})
+
+db.clientes.update({
+    nome: "Ricardo"
+}, {
+    $set: {
+        "carrinho.produtos": []
+    }
+})
+
