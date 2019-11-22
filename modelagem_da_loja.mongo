@@ -55,7 +55,7 @@ db.produtos.findOneAndUpdate({
     }
 })
 
-var precoProdutos = db.clientes.aggregate([
+db.clientes.aggregate([
     {
         $match: {
             nome: "Ricardo"
@@ -63,23 +63,22 @@ var precoProdutos = db.clientes.aggregate([
     },
     {
         $project: {
+            _id: 0,
+            id_cliente: "$_id",
+            endereco: "$endereco",
+            data: ISODate(),
+            produtos: "$carrinho.produtos",
             valorTotal: {
                 $sum: "$carrinho.produtos.preco"
             }
         }
+    }, {
+        $merge: "pedidos"
     }
-]).toArray()[0]
+]).pretty()
 
 var cliente = db.clientes.findOne({
     nome: "Ricardo"
-})
-
-db.pedidos.insertOne({
-    id_cliente: cliente._id,
-    endereco: cliente.endereco,
-    data: ISODate(),
-    valorTotal: precoProdutos.valorTotal,
-    produtos: cliente.carrinho.produtos,
 })
 
 db.clientes.update({
